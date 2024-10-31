@@ -81,6 +81,8 @@
   .daterangepicker table {
     width: 100%;
     margin: 0; }
+  .daterangepicker .weekly-batch tbody tr:hover td {
+    background: #eee; }
   .daterangepicker td, .daterangepicker th {
     text-align: center;
     width: 20px;
@@ -89,7 +91,7 @@
     border: 1px solid transparent;
     white-space: nowrap;
     cursor: pointer; }
-    .daterangepicker td.available:hover, .daterangepicker th.available:hover {
+    .daterangepicker td.available:hover, .daterangepicker th.available:hover, .daterangepicker .weekly-batch tbody tr:hover {
       background: #eee; }
     .daterangepicker td.week, .daterangepicker th.week {
       font-size: 80%;

@@ -1250,6 +1250,7 @@
             var col = title.substr(3, 1);
             var cal = $(e.target).parents('.drp-calendar');
             var date = cal.hasClass('left') ? this.leftCalendar.calendar[row][col] : this.rightCalendar.calendar[row][col];
+            var weekLocale = this.locale.firstDay ? 'isoweek' : 'week';
 
             //highlight the dates between the start date and the date being hovered as a potential end date
             var leftCalendar = this.leftCalendar;
@@ -1297,15 +1298,6 @@
             // * if one of the inputs above the calendars was focused, cancel that manual input
             //
 
-            var weekLocale = this.locale.firstDay ? 'isoweek' : 'week';
-            if (this.weekBatch) {
-                this.setStartDate(date.clone().startOf(weekLocale));
-                this.setEndDate(date.clone().endOf(weekLocale));
-                this.clickApply();
-                this.updateView();
-                return ;
-            }
-
             if (this.endDate || date.isBefore(this.startDate, 'day')) { //picking start
                 if (this.timePicker) {
                     var hour = parseInt(this.container.find('.left .hourselect').val(), 10);
@@ -1324,7 +1316,11 @@
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
                 this.endDate = null;
-                this.setStartDate(date.clone());
+               if (this.weekBatch) {
+                    this.setStartDate(date.clone().startOf(weekLocale));
+                } else {
+                    this.setStartDate(date.clone());
+                }
             } else if (!this.endDate && date.isBefore(this.startDate)) {
                 //special case: clicking the same date for start/end,
                 //but the time of the end date is before the start date
@@ -1347,6 +1343,11 @@
                     date = date.clone().hour(hour).minute(minute).second(second);
                 }
                 this.setEndDate(date.clone());
+                if (this.weekBatch) {
+                    this.setEndDate(date.clone().endOf(weekLocale));
+                } else {
+                    this.setEndDate(date.clone());
+                }
                 if (this.autoApply) {
                   this.calculateChosenLabel();
                   this.clickApply();
